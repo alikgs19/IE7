@@ -14,7 +14,7 @@ public class Listquery {
     public String Date;
 
 
-    public static String GetListItems() throws IOException {
+    public static String GetListItemsQuery() throws IOException {
 
         BufferedReader userInputBR = new BufferedReader(new InputStreamReader(System.in));
 

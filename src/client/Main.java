@@ -50,9 +50,10 @@ public class Main {
             System.out.println("L for List query :");
             System.out.println("P for Price query :");
             System.out.println("R for Reservation :");
+            System.out.println("T for Finalize Temp Reservation:");
             System.out.println("S for Search query:");
             System.out.println("Q for Reservation query :");
-            System.out.println("F for Finalize :");
+            System.out.println("F for Finalize Buying:");
             System.out.println("E for Exit :");
             System.out.println();
 
@@ -60,20 +61,33 @@ public class Main {
             switch (userInputBR.readLine()){
                 case "l":
                 case "L":
-                    query = Listquery.GetListItems();
+                    query = Listquery.GetListItemsQuery();
                     System.out.println(query);
                     break;
                 case "p":
                 case "P":
-                    query = Pricequery.GetPrice();
+                    query = Pricequery.GetPriceQuery();
                     System.out.println(query);
                     break;
 
                 case "R":
                 case "r":
-                    query = TempReservation.GetTempReservation();
+                    query = TempReservation.GetTempReservationQuery();
                     System.out.println(query);
                     break;
+
+                case "t":
+                case "T":
+                    query = FinalizeTempBuying.GetFinalizeTempBuyingQuery();
+                    System.out.println(query);
+                    break;
+
+                case "s":
+                case "S":
+                    query = Search.GetSearchQuery();
+                    System.out.println(query);
+                    break;
+
                 case "e":
                 case "E":
                     exit = true;

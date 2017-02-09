@@ -14,7 +14,7 @@ public class Pricequery {
     public String SeatClass;
 
 
-    public static String GetPrice() throws IOException {
+    public static String GetPriceQuery() throws IOException {
         BufferedReader userInputBR = new BufferedReader(new InputStreamReader(System.in));
 
 
