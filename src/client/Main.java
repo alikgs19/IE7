@@ -94,6 +94,13 @@ public class Main {
                     System.out.println(query);
                     break;
 
+                case "f":
+                case "F":
+                    query = FinalizeBuying.GetFinalizeBuyingQuery();
+                    System.out.println(query);
+                    break;
+
+
                 case "e":
                 case "E":
                     exit = true;
