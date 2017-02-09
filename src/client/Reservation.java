@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Created by Ali on 2/9/2017 AD.
+ * Created by Ali on 2/10/2017 AD.
  */
-public class TempReservation {
+public class Reservation {
     public String OriginCode;
     public String DestinationCode;
     public String AirlineCode;
@@ -21,11 +21,12 @@ public class TempReservation {
     public String NationalID;
 
 
-    public static String GetTempReservationQuery() throws IOException {
+
+    public static String GetReservationQuery() throws IOException {
         BufferedReader userInputBR = new BufferedReader(new InputStreamReader(System.in));
 
 
-        TempReservation query = new TempReservation();
+        Reservation query = new Reservation();
 
         System.out.println("enter origin code : ");
         query.OriginCode = userInputBR.readLine();
@@ -44,9 +45,8 @@ public class TempReservation {
         System.out.println("enter number of infant persons : ");
         query.InfantCount = Integer.parseInt(userInputBR.readLine());
 
-        String TempReservequery = "RES " + query.OriginCode + " " + query.DestinationCode + " " + query.AirlineCode + " " + query.FlightNo +  " " + query.SeatClass
+        String Reservequery = "reserve " + query.OriginCode + " " + query.DestinationCode + " " + query.AirlineCode + " " + query.FlightNo +  " " + query.SeatClass
                 + " " + query.AdultCount + " " + query.ChildCount + " " + query.InfantCount + "\n";
-
 
         for (int i = 0; i < query.AdultCount + query.ChildCount + query.InfantCount; i++) {
 
@@ -58,10 +58,10 @@ public class TempReservation {
             query.NationalID = userInputBR.readLine();
 
             System.out.println("--------------");
-            TempReservequery = TempReservequery + query.FirstName + " " + query.Surname + " " + query.NationalID + "\n";
+            Reservequery = Reservequery + query.FirstName + " " + query.Surname + " " + query.NationalID + "\n";
 
         }
-        return TempReservequery;
-    }
 
+        return Reservequery;
+    }
 }

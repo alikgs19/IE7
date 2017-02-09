@@ -88,6 +88,12 @@ public class Main {
                     System.out.println(query);
                     break;
 
+                case "q":
+                case "Q":
+                    query = Reservation.GetReservationQuery();
+                    System.out.println(query);
+                    break;
+
                 case "e":
                 case "E":
                     exit = true;
