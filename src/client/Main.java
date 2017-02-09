@@ -71,7 +71,7 @@ public class Main {
 
                 case "R":
                 case "r":
-                    query = Reservation.GetTempReserve();
+                    query = TempReservation.GetTempReservation();
                     System.out.println(query);
                     break;
                 case "e":

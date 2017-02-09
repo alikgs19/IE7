@@ -24,7 +24,7 @@ public class Pricequery {
         query.OriginCode = userInputBR.readLine();
         System.out.println("enter destination code : ");
         query.DestinationCode = userInputBR.readLine();
-        System.out.println("enter date : ");
+        System.out.println("enter Airline code : ");
         query.AirlineCode = userInputBR.readLine();
         System.out.println("enter seat class : ");
         query.SeatClass = userInputBR.readLine();
