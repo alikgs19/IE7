@@ -13,8 +13,6 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws IOException ,ClassNotFoundException {
 
-
-
         System.out.println("Welcome :)");
         BufferedReader userInputBR = new BufferedReader(new InputStreamReader(System.in));
 
@@ -23,7 +21,7 @@ public class Main {
         while (true) {
 
             String userInput = userInputBR.readLine();
-            String response = requestHandler(userInput);
+            String response = requestHandler(userInput, buyingProcess);
             System.out.println(response);
 
 //            out.write(request);

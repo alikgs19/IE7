@@ -52,4 +52,12 @@ public class Reservation {
         passengers += PassengerDetail + "\n";
     }
 
+
+    public String toString(){
+        String result = "";
+        result += originCode + " " + destinationCode + " " + airlineCode + " " + flightNo + " " + seatClass;
+
+        return  result;
+    }
+
 }
