@@ -1,8 +1,11 @@
 package client;
 
+import modules.*;
+import org.omg.CORBA.ServerRequest;
+
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * Created by Ali on 2/9/2017 AD.
@@ -10,26 +13,110 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws IOException ,ClassNotFoundException {
 
+
+
+        System.out.println("Welcome :)");
+        BufferedReader userInputBR = new BufferedReader(new InputStreamReader(System.in));
+
+        BuyingProcess buyingProcess = new BuyingProcess();
+
+        while (true) {
+
+            String userInput = userInputBR.readLine();
+            String response = requestHandler(userInput);
+            System.out.println(response);
+
+//            out.write(request);
+//            out.flush();
+        }
+    }
+
+    private static String requestHandler(String userInput, BuyingProcess buyingProcess) throws IOException {
+
         String airplaneServerIP = "188.166.78.119";
         String airplaneServerPort = "8081";
-        Socket airplaneServerSocket=null;
-        BufferedReader in = null;
-        BufferedWriter out = null ;
+        Socket airplaneServerSocket = null;
 
-        airplaneServerSocket = new Socket(airplaneServerIP, Integer.parseInt(airplaneServerPort));
-        in = new BufferedReader(new InputStreamReader(airplaneServerSocket.getInputStream()));
-        out = new BufferedWriter(new OutputStreamWriter(airplaneServerSocket.getOutputStream()));
+        try {
+
+            airplaneServerSocket = new Socket(airplaneServerIP, Integer.parseInt(airplaneServerPort));
+            BufferedReader in = new BufferedReader(new InputStreamReader(airplaneServerSocket.getInputStream()));
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(airplaneServerSocket.getOutputStream()));
+            String[] splittedInput = userInput.split("\\s+");
+            BufferedReader userInputBR = new BufferedReader(new InputStreamReader(System.in));
+
+            if ("reserve".equals(splittedInput[0])){
+                Reservation newReserve = new Reservation(userInput);
+
+                for (int i = 0; i < newReserve.getPassengerCount() ; i++) {
+                    newReserve.addPassengerDetail(userInputBR.readLine());
+                }
+
+                ReservationQuery newReservationQuery = new ReservationQuery(newReserve);
+                // bayad khat be khat send beshe
+                out.write(newReservationQuery.toString());
+                out.flush();
+
+                String[] serverResponse = in.readLine().split("\\+s");
+
+                newReserve.addToken(serverResponse[0]);
+                buyingProcess.addReservation(newReserve);
+                int totalPrice = newReservationQuery.totalPrice(serverResponse[1], serverResponse[2], serverResponse[3]);
 
 
+                String response = serverResponse[0] + Integer.toString(totalPrice);
+                return response;
+            }
 
-        String line;
-        out.write("AV THR MHD 05Feb");
-        out.write("\n");
-//        out.flush();
+            else if ("search".equals(splittedInput[0])) {
+                FlightListQuery flightList = new FlightListQuery(userInput);
+                out.write(flightList.toString());
+                out.flush();
 
-        while(((line = in.readLine()) != null)){
-            System.out.println(line.toString());
+                ArrayList<Flight> flights = new ArrayList<Flight>();
+                String line;
+                while ( (line = in.readLine()) != null) {
+                    Flight newFlight = new Flight(line);
+                    line = in.readLine();
+                    newFlight.addSeatClasses(line);
+                    flights.add(newFlight);
+                }
+
+                int adultCount = Integer.parseInt(splittedInput[5]);
+                int childCount = Integer.parseInt(splittedInput[6]);
+                int infantCount = Integer.parseInt(splittedInput[7]);
+                SearchQuery searchQuery = new SearchQuery(flights, adultCount, childCount, infantCount);
+
+                searchQuery.getPriceForSearch(out, in);
+                String searchResult = searchQuery.getSearchResult();
+                System.out.println(searchResult);
+
+            }
+
+            else if ("finalize".equals(splittedInput[0])) {
+                FinalizeQuery finalizeQuery = new FinalizeQuery(splittedInput[1]);
+                out.write(finalizeQuery.toString());
+                out.flush();
+
+                Reservation finalizeReservation = buyingProcess.getReservation(splittedInput[1]);
+
+                String line;
+                while ( (line = in.readLine()) != null) {
+
+                }
+            }
+
         }
+
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+}
+
+
 
 
 
@@ -65,77 +152,6 @@ public class Main {
 //                break;
 //            }
 //        }
-//        BufferedReader userInputBR = new BufferedReader(new InputStreamReader(System.in));
-//
-//        boolean exit = false;
-//        while (!exit){
-//
-//
-//            System.out.println();
-//            System.out.println("L for List query :");
-//            System.out.println("P for Price query :");
-//            System.out.println("R for Reservation :");
-//            System.out.println("T for Finalize Temp Reservation:");
-//            System.out.println("S for Search query:");
-//            System.out.println("Q for Reservation query :");
-//            System.out.println("F for Finalize Buying:");
-//            System.out.println("E for Exit :");
-//            System.out.println();
-//
-//            String query;
-//            switch (userInputBR.readLine()){
-//                case "l":
-//                case "L":
-//                    query = Listquery.GetListItemsQuery();
-//                    System.out.println(query);
-//                    break;
-//                case "p":
-//                case "P":
-//                    query = Pricequery.GetPriceQuery();
-//                    System.out.println(query);
-//                    break;
-//
-//                case "R":
-//                case "r":
-//                    query = TempReservation.GetTempReservationQuery();
-//                    System.out.println(query);
-//                    break;
-//
-//                case "t":
-//                case "T":
-//                    query = FinalizeTempBuying.GetFinalizeTempBuyingQuery();
-//                    System.out.println(query);
-//                    break;
-//
-//                case "s":
-//                case "S":
-//                    query = Search.GetSearchQuery();
-//                    System.out.println(query);
-//                    break;
-//
-//                case "q":
-//                case "Q":
-//                    query = Reservation.GetReservationQuery();
-//                    System.out.println(query);
-//                    break;
-//
-//                case "f":
-//                case "F":
-//                    query = FinalizeBuying.GetFinalizeBuyingQuery();
-//                    System.out.println(query);
-//                    break;
-//
-//
-//                case "e":
-//                case "E":
-//                    exit = true;
-//                    break;
-//
-//
-//            }
-//        }
-
-    }
 
 
 }

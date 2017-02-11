@@ -1,4 +1,4 @@
-package client;
+package modules;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
 
@@ -19,6 +19,13 @@ public class FlightListQuery {
         this.OriginCode = _OriginCode;
         this.DestinationCode = _DestinationCode;
         this.Date = _Date;
+    }
+
+    public FlightListQuery(String _Request){
+        String[] splittedRequest = _Request.split("\\+s");
+        this.OriginCode = splittedRequest[1];
+        this.DestinationCode = splittedRequest[2];
+        this.Date = splittedRequest[3];
     }
 
     public String getOriginCode(){
