@@ -94,18 +94,13 @@ public class Main {
             }
 
             else if ("finalize".equals(splittedInput[0])) {
-                FinalizeQuery finalizeQuery = new FinalizeQuery(splittedInput[1]);
+                String token = splittedInput[1];
+                FinalizeQuery finalizeQuery = new FinalizeQuery(token);
                 out.write(finalizeQuery.toString());
                 out.flush();
 
-                Reservation finalizeReservation = buyingProcess.getReservation(splittedInput[1]);
-
-                String line;
-                while ( (line = in.readLine()) != null) {
-
-                }
+                buyingProcess.finalizeBuying(out, in, token);
             }
-
         }
 
         catch (Exception ex) {

@@ -1,6 +1,9 @@
 package modules;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +12,7 @@ import java.util.ArrayList;
 public class BuyingProcess {
 
     public ArrayList<Reservation> reservations;
-    public ArrayList<BuyingTickets> buyingTickets;
+    public ArrayList<BoughtTicket> boughtTickets;
 
     public BuyingProcess(){}
 
@@ -37,5 +40,22 @@ public class BuyingProcess {
             }
 
         }
+    }
+
+    public void finalizeBuying(BufferedWriter out, BufferedReader in, String _Token) throws IOException {
+
+        String line;
+        String referenceCode = in.readLine();
+        Reservation reservation = getReservation(_Token);
+
+        while ( (line = in.readLine()) != null) {
+            for (int i = 0; i < reservation.getPassengerCount(); i++) {
+
+                BoughtTicket boughtTicket = new BoughtTicket(reservation, reservation.getPassengerOnIndex(i), referenceCode, _Token);
+                boughtTickets.add(boughtTicket);
+                System.out.println(boughtTicket.toString());
+            }
+        }
+
     }
 }
